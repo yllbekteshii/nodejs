@@ -13,11 +13,14 @@ const employeSchema = new Schema(
       type: String,
     },
     phone: {
-      type: string,
+      type: String,
     },
     age: {
       type: Number,
     },
+    avatar:{
+      type:String
+    }
   },
   { timestamps: true }
 );

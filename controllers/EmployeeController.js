@@ -1,5 +1,4 @@
-import { response } from "express";
-import { Employee } from "../models/Employees";
+const Employee = require('../models/Employees')
 
 //show the list of employees
 const index = (req, res, next) => {
@@ -37,32 +36,38 @@ const store = (req, res, next) => {
   let employee = new Employee({
     name: req.body.name,
     designation: req.body.designation,
-    email: req.body.email,
     phone: req.body.phone,
     age: req.body.age,
   });
-  employee.save().then((response) => {
-    res
-      .json({
-        message: "Employee Added Succesfully!",
-      })
-      .catch((error) => {
-        res.json({
-          message: "An error Occured!",
-        });
-      });
+ if(req.files){
+  let path = ''
+  req.files.forEach(function(files,index,arr){
+    path = path + files.path + ','
   });
+  path = path.substring(0,path.lastIndexOf(','))
+  employee.avatar  = path
+ }
+  employee.save()
+    .then(response => {
+      res.json({
+        message: 'Employee added successfully'
+      });
+    })
+    .catch(error => {
+      res.json({
+        message: 'An error occurred'
+      });
+    });
 };
 
 
 //Update Employ
 
 const update   =  (req,res,next) =>{
-    let  employeeID = req.body.employeeid
+    let  employeeID = req.body.employeeID
     let updatedData =  {
         name:req.body.name,
         designation:req.body.designation,
-        email:req.body.email,
         phone:req.body.phone,
         age:req.body.age
     }
@@ -71,21 +76,19 @@ const update   =  (req,res,next) =>{
         res.json({
             message: 'Employee Updated Succesfully'
         })
-        .catch(err=>{
-            res.json({
-                message:'Error Occured!'
-            })
-        })
-    })    
+    }).catch(err=>{
+      res.json({
+          message:'Error Occured!'
+      })
+  })
 }
 
 const deleteEmploye = (req,res,next) =>{
-let employeId = req.body.employeeid;
-
-Employee.findByidAndRemove(employeId)
+let employeId = req.body.employeeID;
+Employee.findByIdAndDelete(employeId)
 .then(()=>{
-    req.json({
-        message:'Employ Deleted Succsfully'
+  res.json({
+        message:'Employ Deleted Succsfully' 
     })
 })
 .catch(err=>{
