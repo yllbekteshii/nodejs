@@ -1,4 +1,4 @@
-const Employee = require('../models/Employees')
+const Employee = require("../models/Employees");
 
 //show the list of employees
 const index = (req, res, next) => {
@@ -39,68 +39,70 @@ const store = (req, res, next) => {
     phone: req.body.phone,
     age: req.body.age,
   });
- if(req.files){
-  let path = ''
-  req.files.forEach(function(files,index,arr){
-    path = path + files.path + ','
-  });
-  path = path.substring(0,path.lastIndexOf(','))
-  employee.avatar  = path
- }
-  employee.save()
-    .then(response => {
+  if (req.files) {
+    let path = "";
+    req.files.forEach(function (files, index, arr) {
+      path = path + files.path + ",";
+    });
+    path = path.substring(0, path.lastIndexOf(","));
+    employee.avatar = path;
+  }
+  employee
+    .save()
+    .then((response) => {
       res.json({
-        message: 'Employee added successfully'
+        message: "Employee added successfully",
       });
     })
-    .catch(error => {
+    .catch((error) => {
       res.json({
-        message: 'An error occurred'
+        message: "An error occurred",
       });
     });
 };
 
-
 //Update Employ
 
-const update   =  (req,res,next) =>{
-    let  employeeID = req.body.employeeID
-    let updatedData =  {
-        name:req.body.name,
-        designation:req.body.designation,
-        phone:req.body.phone,
-        age:req.body.age
-    }
-    Employee.findByIdAndUpdate(employeeID, {$set:updatedData})
-    .then(()=>{
-        res.json({
-            message: 'Employee Updated Succesfully'
-        })
-    }).catch(err=>{
+const update = (req, res, next) => {
+  let employeeID = req.body.employeeID;
+  let updatedData = {
+    name: req.body.name,
+    designation: req.body.designation,
+    phone: req.body.phone,
+    age: req.body.age,
+  };
+  Employee.findByIdAndUpdate(employeeID, { $set: updatedData })
+    .then(() => {
       res.json({
-          message:'Error Occured!'
-      })
-  })
-}
-
-const deleteEmploye = (req,res,next) =>{
-let employeId = req.body.employeeID;
-Employee.findByIdAndDelete(employeId)
-.then(()=>{
-  res.json({
-        message:'Employ Deleted Succsfully' 
+        message: "Employee Updated Succesfully",
+      });
     })
-})
-.catch(err=>{
-    res.json(
-    {
-        message:'An error Occured!'
-    }
-    )
-})
-}
+    .catch((err) => {
+      res.json({
+        message: "Error Occured!",
+      });
+    });
+};
 
+const deleteEmploye = (req, res, next) => {
+  let employeId = req.body.employeeID;
+  Employee.findByIdAndDelete(employeId)
+    .then(() => {
+      res.json({
+        message: "Employ Deleted Succsfully",
+      });
+    })
+    .catch((err) => {
+      res.json({
+        message: "An error Occured!",
+      });
+    });
+};
 
 module.exports = {
-    index,show,store,update,deleteEmploye
-}
+  index,
+  show,
+  store,
+  update,
+  deleteEmploye,
+};
