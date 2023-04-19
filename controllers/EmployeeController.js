@@ -2,17 +2,34 @@ const Employee = require("../models/Employees");
 
 //show the list of employees
 const index = (req, res, next) => {
-  Employee.find()
-    .then((response) => {
-      res.json({
-        response,
-      });
+
+if(req.query.page && req.query.limit){
+  Employee.paginate({},{page:req.query.page, limit:req.query.limit})
+  .then(response=>{
+    res.json({
+      response
     })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured!",
-      });
-    });
+  })
+  .catch(error=>{
+    res.json(
+      error
+    )
+  })
+}else{
+  Employee.find()
+.then(response=>{
+  res.json({
+    response
+  })
+})
+.catch(error=>{
+  res.json(
+    error
+  )
+})
+}
+
+
 };
 
 //Show singel product
