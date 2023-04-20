@@ -122,4 +122,4 @@ module.exports = {
   store,
   update,
   deleteEmploye,
-};
+}; 

@@ -39,5 +39,7 @@ app.listen(PORT, ()=> {
     console.log(`Server is running at port  ${PORT}`)
 })
 
+
+
 app.use('/api/employee', EmployeeRoute)
 app.use('/api/auth', AuthRoute)
